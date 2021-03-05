@@ -194,8 +194,8 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel1" pref="292" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="jPanel1" min="-2" pref="261" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -225,15 +225,10 @@
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="btnCancelar" min="-2" pref="128" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="btnConfirmar" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="btnSelecionarParticipantes" min="-2" pref="137" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="btnSelecionarParticipantes1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnConfirmar" pref="148" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Component id="ftxtDia" alignment="0" min="-2" pref="137" max="-2" attributes="0"/>
+                              <Component id="ftxtData" alignment="0" min="-2" pref="137" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
@@ -257,12 +252,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="lblDia" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="ftxtDia" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btnSelecionarParticipantes" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnSelecionarParticipantes1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="ftxtData" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="lblTurno" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
@@ -290,14 +280,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Turno:"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnSelecionarParticipantes">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Selecionar Partidos"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelecionarParticipantesActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnConfirmar">
           <Properties>
@@ -337,18 +319,10 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblDia">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Dia da elei&#xe7;&#xe3;o:"/>
+            <Property name="text" type="java.lang.String" value="Data da elei&#xe7;&#xe3;o:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="btnSelecionarParticipantes1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Selecionar Candidatos"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelecionarParticipantes1ActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JFormattedTextField" name="ftxtDia">
+        <Component class="javax.swing.JFormattedTextField" name="ftxtData">
           <Properties>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Cursor de Texto"/>
@@ -356,6 +330,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtTurno">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTurnoActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

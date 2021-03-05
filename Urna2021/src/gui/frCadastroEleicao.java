@@ -6,15 +6,13 @@
 package gui;
 
 import classes.Candidato;
-import classes.Partido;
 import classes.Persistencia;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.List;
+import java.util.Calendar;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
-import java.util.Date;
 
 /**
  *
@@ -25,8 +23,6 @@ public class frCadastroEleicao extends javax.swing.JFrame {
     /**
      * Creates new form frCadastroEleicao
      */
-    private List<Partido> partidos;
-    private List<Candidato> candidatos;
     
     public frCadastroEleicao() {
         initComponents();
@@ -34,35 +30,45 @@ public class frCadastroEleicao extends javax.swing.JFrame {
         try{
             MaskFormatter maskDia = new MaskFormatter("##/##/####");
             
-            maskDia.install(this.ftxtDia);
+            maskDia.install(this.ftxtData);
         }catch(ParseException ex){
         }
     }
     
     public boolean verificaData(String data){
         String[] partes = data.split("/");  
-        Date d=new Date();          
-        int anoAtual = 1900 + d.getYear();  
+        Calendar cal = Calendar.getInstance();
+        int anoAtual = cal.get(Calendar.YEAR); 
         int ano = Integer.parseInt(partes[2]);
-        if(ano < 1900 || ano > anoAtual-18)
+        if(ano < anoAtual)
             return false;
+        int mesAtual = cal.get(Calendar.MONTH)+1; 
         int mes = Integer.parseInt(partes[1]);
+        if(mes < mesAtual)
+            return false;
         if(mes < 1 || mes > 12)
             return false;
         int dia = Integer.parseInt(partes[0]);
-        if(mes == 2)
-            if(dia > 29)
-                return false;
+        int diaAtual = cal.get(Calendar.DATE);
+        if(dia <= diaAtual)
+            return false; 
+        if(dia < 1 || dia > 31)
+            return false;
         if(mes == 4 || mes == 6 || mes == 9 || mes == 11)
             if(dia > 30)
                 return false;
-        if(dia < 1)
-            return false;
+        if(mes == 2){
+            if(dia > 29)
+                return false;
+            else if(dia == 29 )
+                if(!((ano % 400 == 0) || ((ano % 4 == 0) && (ano % 100 != 0))))
+                    return false;
+        }
         return true;
     }
     
     public void limpaCampos(){
-        this.ftxtDia.setText("");
+        this.ftxtData.setText("");
         this.txtCargo.setText("");
         this.txtRegiao.setText("");
         this.txtTurno.setText("");
@@ -98,7 +104,6 @@ public class frCadastroEleicao extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         lblTurno = new javax.swing.JLabel();
-        btnSelecionarParticipantes = new javax.swing.JButton();
         btnConfirmar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         lblCargo = new javax.swing.JLabel();
@@ -106,8 +111,7 @@ public class frCadastroEleicao extends javax.swing.JFrame {
         lblRegiao = new javax.swing.JLabel();
         txtRegiao = new javax.swing.JTextField();
         lblDia = new javax.swing.JLabel();
-        btnSelecionarParticipantes1 = new javax.swing.JButton();
-        ftxtDia = new javax.swing.JFormattedTextField();
+        ftxtData = new javax.swing.JFormattedTextField();
         txtTurno = new javax.swing.JTextField();
 
         lblData1.setText("Data:");
@@ -211,13 +215,6 @@ public class frCadastroEleicao extends javax.swing.JFrame {
 
         lblTurno.setText("Turno:");
 
-        btnSelecionarParticipantes.setText("Selecionar Partidos");
-        btnSelecionarParticipantes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSelecionarParticipantesActionPerformed(evt);
-            }
-        });
-
         btnConfirmar.setText("Confirmar ");
         btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -248,16 +245,15 @@ public class frCadastroEleicao extends javax.swing.JFrame {
             }
         });
 
-        lblDia.setText("Dia da eleição:");
+        lblDia.setText("Data da eleição:");
 
-        btnSelecionarParticipantes1.setText("Selecionar Candidatos");
-        btnSelecionarParticipantes1.addActionListener(new java.awt.event.ActionListener() {
+        ftxtData.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
+        txtTurno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSelecionarParticipantes1ActionPerformed(evt);
+                txtTurnoActionPerformed(evt);
             }
         });
-
-        ftxtDia.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -281,12 +277,8 @@ public class frCadastroEleicao extends javax.swing.JFrame {
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(btnConfirmar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(btnSelecionarParticipantes, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(btnSelecionarParticipantes1)))
-                            .addComponent(ftxtDia, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnConfirmar, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)))
+                            .addComponent(ftxtData, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -305,11 +297,7 @@ public class frCadastroEleicao extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblDia)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ftxtDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSelecionarParticipantes)
-                    .addComponent(btnSelecionarParticipantes1))
+                .addComponent(ftxtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblTurno)
                 .addGap(1, 1, 1)
@@ -332,8 +320,8 @@ public class frCadastroEleicao extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -345,7 +333,7 @@ public class frCadastroEleicao extends javax.swing.JFrame {
         cargo = cargo.replace(" ", "");
         String regiao = this.txtRegiao.getText();
         regiao = regiao.replace(" ", "");
-        String dia = this.ftxtDia.getText();
+        String dia = this.ftxtData.getText();
         dia = dia.replace(" ", "");
         String turno = this.txtTurno.getText();
         turno = turno.replace(" ", "");
@@ -385,14 +373,14 @@ public class frCadastroEleicao extends javax.swing.JFrame {
             return;
         PreparedStatement ps = null;
         try{
-            ps = Persistencia.conexao().prepareStatement("Insert into Eleicao (cargo,regiao,dia,turno) values ('"+this.txtCargo.getText()+"','"+this.txtRegiao.getText()+"','"+this.ftxtDia.getText()+"','"+this.txtTurno.getText()+"');");            
+            ps = Persistencia.conexao().prepareStatement("INSERT INTO eleicao (cargo,regiao,data_da_eleicao,turno) VALUES ('"+this.txtCargo.getText()+"','"+this.txtRegiao.getText()+"','"+this.ftxtData.getText()+"','"+this.txtTurno.getText()+"');");            
             ps.executeUpdate();
-            JOptionPane.showMessageDialog(null,"Cadastro Realizado com sucesso.","Sucesso!", 1);          
+            JOptionPane.showMessageDialog(null,"Cadastro Realizado com sucesso.","Sucesso!", 1);
+            this.limpaCampos();                  
         }
         catch(SQLException ex){
             JOptionPane.showMessageDialog(null,"Não foi possível conectar ao banco de dados.","Erro!", 2);           
         }
-        this.limpaCampos();
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -408,29 +396,15 @@ public class frCadastroEleicao extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRegiaoActionPerformed
 
-    private void btnSelecionarParticipantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarParticipantesActionPerformed
-    JOptionPane.showMessageDialog(null,"Não implementado ainda!","Erro!", 2);      
-    /*
-        frSelecionarPartidos selecao = new frSelecionarPartidos();
-        selecao.setVisible(true);
-    */
-    }//GEN-LAST:event_btnSelecionarParticipantesActionPerformed
-
-    private void btnSelecionarParticipantes1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarParticipantes1ActionPerformed
-    JOptionPane.showMessageDialog(null,"Não implementado ainda!","Erro!", 2);      
-    /*
-        frSelecionarCandidatos selecao = new frSelecionarCandidatos();
-        selecao.setVisible(true);
-    */
-    }//GEN-LAST:event_btnSelecionarParticipantes1ActionPerformed
+    private void txtTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTurnoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTurnoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConfirmar;
-    private javax.swing.JButton btnSelecionarParticipantes;
-    private javax.swing.JButton btnSelecionarParticipantes1;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JFormattedTextField ftxtDia;
+    private javax.swing.JFormattedTextField ftxtData;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

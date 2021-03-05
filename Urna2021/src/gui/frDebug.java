@@ -57,7 +57,7 @@ public class frDebug extends javax.swing.JFrame {
             }
         });
 
-        btnCadastrarCandidato.setText("Testar Cadastrar Candidato");
+        btnCadastrarCandidato.setText("Testar Cadastrar Partidario");
         btnCadastrarCandidato.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCadastrarCandidatoActionPerformed(evt);
@@ -117,7 +117,7 @@ public class frDebug extends javax.swing.JFrame {
 
     private void btnCadastrarCandidatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarCandidatoActionPerformed
         this.dispose();
-        new frCadastroCandidato().setVisible(true);
+        new frCadastroPartidario().setVisible(true);
     }//GEN-LAST:event_btnCadastrarCandidatoActionPerformed
 
 

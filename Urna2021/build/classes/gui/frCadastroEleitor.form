@@ -149,6 +149,9 @@
           </Events>
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="ftxtNascimento">
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="ftxtNascimentoMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="ftxtCPF">
         </Component>

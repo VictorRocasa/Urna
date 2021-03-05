@@ -126,6 +126,9 @@
           </Events>
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="ftxtNumero">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ftxtNumeroActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

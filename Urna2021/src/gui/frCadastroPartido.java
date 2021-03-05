@@ -6,8 +6,8 @@
 package gui;
 
 import classes.Persistencia;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import javax.swing.JOptionPane;
@@ -79,6 +79,12 @@ public class frCadastroPartido extends javax.swing.JFrame {
         btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmarActionPerformed(evt);
+            }
+        });
+
+        ftxtNumero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ftxtNumeroActionPerformed(evt);
             }
         });
 
@@ -183,15 +189,25 @@ public class frCadastroPartido extends javax.swing.JFrame {
         }
         PreparedStatement ps = null;
         try{
-            ps = Persistencia.conexao().prepareStatement("Insert into Partido (numero, nome) values ("+this.ftxtNumero.getText()+",'"+this.txtNome.getText()+"');");            
+            ps = Persistencia.conexao().prepareStatement("SELECT id_partido FROM partido WHERE numero = "+this.ftxtNumero.getText()+";");           
+            ResultSet retorno = ps.executeQuery();
+            if(retorno.next()){
+                JOptionPane.showMessageDialog(null,"Número já cadastrado!","Erro!", 2);    
+                return;
+            }  
+            ps = Persistencia.conexao().prepareStatement("INSERT INTO partido (numero, nome) VALUES ("+this.ftxtNumero.getText()+",'"+this.txtNome.getText()+"');");            
             ps.executeUpdate();
-            JOptionPane.showMessageDialog(null,"Cadastro Realizado com sucesso.","Sucesso!",1);    
+            JOptionPane.showMessageDialog(null,"Cadastro Realizado com sucesso.","Sucesso!",1);
+            this.limpaCampos();            
         }
         catch(SQLException ex){
-            System.out.println("Não foi possível conectar ao banco de dados.");            
+           JOptionPane.showMessageDialog(null,"Não foi possível conectar ao banco de dados!","Erro!", 2);              
         }
-        this.limpaCampos();
     }//GEN-LAST:event_btnConfirmarActionPerformed
+
+    private void ftxtNumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ftxtNumeroActionPerformed
+        
+    }//GEN-LAST:event_ftxtNumeroActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

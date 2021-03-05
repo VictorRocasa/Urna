@@ -7,9 +7,10 @@ package gui;
 
 import classes.Persistencia;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Date;
+import java.util.Calendar;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
@@ -86,6 +87,12 @@ public class frCadastroEleitor extends javax.swing.JFrame {
             }
         });
 
+        ftxtNascimento.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ftxtNascimentoMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout lblBarra1Layout = new javax.swing.GroupLayout(lblBarra1);
         lblBarra1.setLayout(lblBarra1Layout);
         lblBarra1Layout.setHorizontalGroup(
@@ -158,33 +165,74 @@ public class frCadastroEleitor extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    public boolean validarCPF(String CPF){
-        return true;
+    public boolean validarCPF(String cpf){
+        if(cpf.length()!=14)
+            return false;
+        int dig1=0, dig2=0, calc1=0, calc2=0, aux1=10, aux2=11;
+        int [] arrayCPF;
+        boolean repetido = true;
+        arrayCPF = new int[9];
+        dig1 = Integer.parseInt(cpf.substring(12,13));
+        dig2 = Integer.parseInt(cpf.substring(13,14));
+       
+        cpf = cpf.substring(0,3) + cpf.substring(4,7) + cpf.substring(8,11);
+        for(int i=0; i<arrayCPF.length; i++){
+            arrayCPF[i] = Integer.parseInt(cpf.substring(i, i+1));
+            
+            calc1 += aux1 * arrayCPF[i];
+            aux1--;
+            calc2 += aux2 * arrayCPF[i];
+            aux2--;
+            
+            if(arrayCPF[0] != arrayCPF[i] && repetido)
+                repetido = false;
+        }
+        calc2 += dig1 * aux2;
+        
+        calc1 = (calc1 * 10) % 11;
+        calc2 = (calc2 * 10) % 11;
+        
+        if(calc1 == 10)
+            calc1 = 0;
+        
+        if(calc2 == 10)
+            calc2 = 0;
+                      
+        if(calc1 == dig1 && calc2 == dig2 && !repetido)
+            return true;
+        else
+            return false;
     }
     
-    public boolean validarTitulo(String CPF){
+    public boolean validarTitulo(String titulo){
+        if(titulo.length()!=12)
+            return false;
         return true;
     }
     
     public boolean verificaData(String data){
         String[] partes = data.split("/");  
-        Date d=new Date();          
-        int anoAtual = 1900 + d.getYear();  
+        Calendar cal = Calendar.getInstance();
+        int anoAtual = cal.get(Calendar.YEAR); 
         int ano = Integer.parseInt(partes[2]);
-        if(ano < 1900 || ano > anoAtual-18)
+        if(ano < 1900 || ano > anoAtual-16)
             return false;
         int mes = Integer.parseInt(partes[1]);
         if(mes < 1 || mes > 12)
             return false;
         int dia = Integer.parseInt(partes[0]);
-        if(mes == 2)
-            if(dia > 29)
-                return false;
+        if(dia < 1 || dia > 31)
+            return false;
         if(mes == 4 || mes == 6 || mes == 9 || mes == 11)
             if(dia > 30)
                 return false;
-        if(dia < 1)
-            return false;
+        if(mes == 2){
+            if(dia > 29)
+                return false;
+            else if(dia == 29 )
+                if(!((ano % 400 == 0) || ((ano % 4 == 0) && (ano % 100 != 0))))
+                    return false;
+        }
         return true;
     }
     
@@ -222,16 +270,15 @@ public class frCadastroEleitor extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Data de nascimento inválida!","Erro!", 2);
             return false;
         }
-        if(CPF.length()!=14){
+        if(!validarCPF(CPF)){
             JOptionPane.showMessageDialog(null, "CPF inválido!","Erro!", 2);
             return false;
         }
-        if(titulo.length()!=12){
+        if(!validarTitulo(titulo)){
             JOptionPane.showMessageDialog(null, "Título inválido!","Erro!", 2);
             return false;
         }
-        validarCPF(CPF);
-        validarCPF(titulo);
+        
         return true;
     }
     
@@ -252,16 +299,25 @@ public class frCadastroEleitor extends javax.swing.JFrame {
             return;
         PreparedStatement ps = null;
         try{
-            ps = Persistencia.conexao().prepareStatement("Insert into Eleitor (nome, nascimento, CPF, titulo) values ('"+this.txtNome.getText()+"','"
+            ps = Persistencia.conexao().prepareStatement("SELECT id_eleitor FROM eleitor WHERE cpf LIKE '"+this.ftxtCPF.getText()+"';");               
+            ResultSet retorno = ps.executeQuery();
+            if(retorno.next()){
+                JOptionPane.showMessageDialog(null,"CPF já cadastrado!.","Erro!", 2);
+                return;
+            }
+            ps = Persistencia.conexao().prepareStatement("INSERT INTO eleitor (nome, nascimento, CPF, titulo) VALUES ('"+this.txtNome.getText()+"','"
             +this.ftxtNascimento.getText()+"','"+this.ftxtCPF.getText()+"','"+this.fxtxTituloEleitor.getText()+"');");            
             ps.executeUpdate();
-            JOptionPane.showMessageDialog(null,"Cadastro Realizado com sucesso.","Sucesso!", 1);          
+            JOptionPane.showMessageDialog(null,"Cadastro Realizado com sucesso.","Sucesso!", 1); 
+            this.limpaCampos();                 
         }
         catch(SQLException ex){
             JOptionPane.showMessageDialog(null,"Não foi possível conectar ao banco de dados.","Erro!", 2);           
         }
-        this.limpaCampos();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void ftxtNascimentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ftxtNascimentoMouseClicked
+    }//GEN-LAST:event_ftxtNascimentoMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField ftxtCPF;
