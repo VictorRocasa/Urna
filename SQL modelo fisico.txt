@@ -1,0 +1,78 @@
+	CREATE TABLE eleitor(
+		id_eleitor serial NOT null PRIMARY KEY,
+		nome varchar(200) NOT null,
+		nascimento date NOT null,
+		cpf varchar(14) NOT null,
+		titulo varchar(14) NOT null
+	);
+
+	CREATE TABLE fiscal(
+		id_fiscal serial NOT null PRIMARY KEY,
+		id_eleitor integer NOT null,
+		expiracao_do_cargo date,
+		FOREIGN KEY (id_eleitor) REFERENCES eleitor (id_eleitor) ON DELETE CASCADE
+	);
+
+	CREATE TABLE partido(
+		id_partido serial NOT null PRIMARY KEY, 
+		numero integer NOT null,
+		nome varchar(200)
+	);
+
+	CREATE TABLE partidario(
+		id_partidario serial NOT null PRIMARY KEY,
+		id_eleitor integer NOT null,
+		id_partido integer NOT null,
+		cargo_no_partido varchar(200) not null,
+		FOREIGN KEY (id_eleitor) REFERENCES eleitor (id_eleitor) ON DELETE CASCADE,
+		FOREIGN KEY (id_partido) REFERENCES Partido (id_partido) ON DELETE CASCADE
+	);
+
+
+	CREATE TABLE eleicao(
+		id_eleicao serial NOT null PRIMARY KEY,
+		cargo varchar(200) NOT null,
+		regiao varchar(200) NOT null,
+		data_da_eleicao date NOT null,
+		turno varchar(200) NOT null
+	);
+
+
+	CREATE TABLE legenda(
+		id_legenda serial NOT null PRIMARY KEY,
+		id_partido int NOT null,
+		id_eleicao int NOT null, 
+		FOREIGN KEY (id_partido) REFERENCES partido (id_partido) ON DELETE CASCADE,
+		FOREIGN KEY (id_eleicao) REFERENCES eleicao (id_eleicao) ON DELETE CASCADE
+	);
+
+
+	CREATE TABLE candidato(
+		id_candidato serial NOT null PRIMARY KEY,
+		id_legenda int NOT null,
+		id_partidario int NOT null,
+		numero int NOT null,
+		FOREIGN KEY (id_legenda) REFERENCES legenda (id_legenda) ON DELETE CASCADE,
+		FOREIGN KEY (id_partidario) REFERENCES partidario (id_partidario) ON DELETE CASCADE
+	);
+
+
+	CREATE TABLE login(
+		id_login serial NOT null PRIMARY KEY,
+		id_eleitor int NOT null,
+		cpf varchar(14) NOT null,
+		senha varchar(20) NOT null,
+		tipo int NOT null,
+		FOREIGN KEY (id_eleitor) REFERENCES eleitor (id_eleitor) ON DELETE CASCADE,
+	);
+
+
+	CREATE TABLE voto(
+		id_voto serial NOT null PRIMARY KEY,
+		id_eleitor int NOT null,
+		id_legenda int NOT null,
+		id_candidato int,
+		FOREIGN KEY (id_eleitor) REFERENCES eleitor (id_eleitor) ON DELETE CASCADE,
+		FOREIGN KEY (id_legenda) REFERENCES legenda (id_legenda) ON DELETE CASCADE,
+		FOREIGN KEY (id_candidato) REFERENCES candidato (id_candidato) ON DELETE CASCADE
+	);
