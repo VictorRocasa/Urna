@@ -38,8 +38,14 @@ public class EleitorDAO implements InterfaceDAO{
     }
 
     @Override
-    public void altera(Object obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void altera(Object obj) throws ClassNotFoundException, SQLException{
+        Eleitor eleitor = (Eleitor) obj;
+        sql = "UPDATE eleitor SET nome = '"+eleitor.getNome()+"', nascimento = '"+eleitor.getNascimento()+"', titulo = '"+eleitor.getTituloEleitor()+"' WHERE id_eleitor = "+eleitor.getidEleitorr()+";";
+        conn = Conexao.conectar();
+        PreparedStatement stmt;
+        stmt = conn.prepareStatement(sql);
+        stmt.executeUpdate();
+        Conexao.closeConn();
     }
 
     @Override
@@ -73,4 +79,13 @@ public class EleitorDAO implements InterfaceDAO{
         Conexao.closeConn();  
         return registros;
     }  
+
+    public int consulta(String cpf) throws ClassNotFoundException, SQLException {
+        sql = "SELECT id_eleitor FROM eleitor WHERE cpf LIKE '"+cpf+"';";
+        conn = Conexao.conectar();
+        Statement stmt = conn.createStatement();
+        ResultSet retorno = stmt.executeQuery(sql);
+        retorno.next();
+        return retorno.getInt(1);
+    }
 }

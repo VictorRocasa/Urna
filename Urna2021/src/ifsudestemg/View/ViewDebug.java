@@ -6,7 +6,6 @@
 package ifsudestemg.View;
 
 import ifsudestemg.Controller.EleicaoController;
-import ifsudestemg.Controller.EleitorController;
 import ifsudestemg.Controller.PartidarioController;
 import ifsudestemg.Controller.PartidoController;
 
@@ -32,22 +31,15 @@ public class ViewDebug extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnCadastrarEleitor = new javax.swing.JButton();
         btnCadastrarPartido = new javax.swing.JButton();
         btnCRUDEleicao = new javax.swing.JButton();
         btnCadastrarCandidato = new javax.swing.JButton();
         lblTestes = new javax.swing.JLabel();
+        btnLogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Debug Urna");
         setLocation(new java.awt.Point(0, 0));
-
-        btnCadastrarEleitor.setText("Testar Cadastrar Eleitor");
-        btnCadastrarEleitor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCadastrarEleitorActionPerformed(evt);
-            }
-        });
 
         btnCadastrarPartido.setText("Testar CRUD Partido");
         btnCadastrarPartido.addActionListener(new java.awt.event.ActionListener() {
@@ -72,6 +64,13 @@ public class ViewDebug extends javax.swing.JFrame {
 
         lblTestes.setText("Tela de debug para testes:");
 
+        btnLogin.setText("Testar Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -79,28 +78,31 @@ public class ViewDebug extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnCadastrarCandidato, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCRUDEleicao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCadastrarPartido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCadastrarEleitor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(lblTestes))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(btnCadastrarCandidato, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
+                                .addComponent(btnCRUDEleicao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnCadastrarPartido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblTestes)))
+                    .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(lblTestes)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCadastrarEleitor)
+                .addGap(11, 11, 11)
+                .addComponent(btnLogin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCadastrarPartido)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCRUDEleicao)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCadastrarCandidato)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -108,39 +110,38 @@ public class ViewDebug extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCRUDEleicaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCRUDEleicaoActionPerformed
-        this.dispose();
+        this.setVisible(false);
         EleicaoController eleicaoController = new EleicaoController();
-        ViewCRUDEleicao viewCRUDEleicao = new ViewCRUDEleicao(eleicaoController);
+        ViewCRUDEleicao viewCRUDEleicao = new ViewCRUDEleicao(this, eleicaoController);
         viewCRUDEleicao.setVisible(true);
     }//GEN-LAST:event_btnCRUDEleicaoActionPerformed
 
-    private void btnCadastrarEleitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarEleitorActionPerformed
-        this.dispose();
-        EleitorController eleitorController = new EleitorController();
-        ViewCadastroEleitor viewCadastroEleitor = new ViewCadastroEleitor(eleitorController);
-        viewCadastroEleitor.setVisible(true);
-    }//GEN-LAST:event_btnCadastrarEleitorActionPerformed
-
     private void btnCadastrarPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarPartidoActionPerformed
-        this.dispose();
+        this.setVisible(false);
         PartidoController partidoController = new PartidoController();
-        ViewCRUDPartido viewCRUDPartido = new ViewCRUDPartido(partidoController);
+        ViewCRUDPartido viewCRUDPartido = new ViewCRUDPartido(this, partidoController);
         viewCRUDPartido.setVisible(true);
     }//GEN-LAST:event_btnCadastrarPartidoActionPerformed
 
     private void btnCadastrarCandidatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarCandidatoActionPerformed
-        this.dispose();
+        this.setVisible(false);
         PartidarioController partidarioController = new PartidarioController();
-        ViewCRUDPartidario viewCRUDPartidario = new ViewCRUDPartidario(partidarioController);
+        ViewCRUDPartidario viewCRUDPartidario = new ViewCRUDPartidario(this,partidarioController);
         viewCRUDPartidario.setVisible(true);
     }//GEN-LAST:event_btnCadastrarCandidatoActionPerformed
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        this.dispose();
+        ViewRealizarLogin viewRealizarLogin = new ViewRealizarLogin();
+        viewRealizarLogin.setVisible(true);
+    }//GEN-LAST:event_btnLoginActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCRUDEleicao;
     private javax.swing.JButton btnCadastrarCandidato;
-    private javax.swing.JButton btnCadastrarEleitor;
     private javax.swing.JButton btnCadastrarPartido;
+    private javax.swing.JButton btnLogin;
     private javax.swing.JLabel lblTestes;
     // End of variables declaration//GEN-END:variables
 }

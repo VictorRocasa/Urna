@@ -8,8 +8,6 @@ package ifsudestemg.View;
 import ifsudestemg.Controller.PartidarioController;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
@@ -20,11 +18,13 @@ import javax.swing.text.MaskFormatter;
 public class ViewCadastroPartidario extends javax.swing.JFrame {
     private PartidarioController partidarioController;
     private int idEdicao;
+    private javax.swing.JFrame origem;
     
     /**
      * Creates new form frCadastroCanditado
      */
-    public ViewCadastroPartidario(PartidarioController partidarioController) {
+    public ViewCadastroPartidario(javax.swing.JFrame origem, PartidarioController partidarioController) {
+        this.origem = origem;
         this.partidarioController = partidarioController;
         initComponents();
         idEdicao = -1;
@@ -33,7 +33,7 @@ public class ViewCadastroPartidario extends javax.swing.JFrame {
     
     private void aplicaMascara(){
         try{
-            MaskFormatter maskCPF = new MaskFormatter("###.###.###.##");
+            MaskFormatter maskCPF = new MaskFormatter("###.###.###-##");
             MaskFormatter maskNumero = new MaskFormatter("##");
             
             maskCPF.install(this.ftxtCPF);
@@ -42,7 +42,8 @@ public class ViewCadastroPartidario extends javax.swing.JFrame {
         }
     }
     
-    public ViewCadastroPartidario(PartidarioController partidarioController, int idPartidario, String cpf, String numero, String cargoNoPartido) {
+    public ViewCadastroPartidario(javax.swing.JFrame origem, PartidarioController partidarioController, int idPartidario, String cpf, String numero, String cargoNoPartido) {
+        this.origem = origem;
         this.partidarioController = partidarioController;
         initComponents();
         aplicaMascara();        
@@ -203,7 +204,7 @@ public class ViewCadastroPartidario extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Número inválido!","Erro!", 2);
             return false;
         }
-        if(!cargo.matches("[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{3,}")){
+        if(!cargo.matches("[A-Za-záàâãéèêîíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑÎ]{3,200}")){
             JOptionPane.showMessageDialog(this, "Cargo inválido!","Erro!!", 2);
             return false;
         }
@@ -222,9 +223,7 @@ public class ViewCadastroPartidario extends javax.swing.JFrame {
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
-        ViewCRUDPartidario viewCRUDPartidario = new ViewCRUDPartidario(partidarioController);
-        viewCRUDPartidario.preencheTabela();
-        viewCRUDPartidario.setVisible(true);
+        origem.setVisible(true);
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
@@ -250,7 +249,7 @@ public class ViewCadastroPartidario extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this,"Partido com o número digitado inexistente!","Erro!", 2);
                 return;
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ViewCadastroPartidario.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this,"A primeira e a segunda senha não conferem!","Erro!", 0);
                 return;
             } 
         }
@@ -265,14 +264,12 @@ public class ViewCadastroPartidario extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this,"Partido com o número digitado inexistente!","Erro!", 2);
                 return;
             }catch (ClassNotFoundException ex) {
-                Logger.getLogger(ViewCadastroPartidario.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this,"A primeira e a segunda senha não conferem!","Erro!", 0);
                 return;
             } 
         }
         this.dispose();
-        ViewCRUDPartidario viewCRUDPartidario = new ViewCRUDPartidario(partidarioController);
-        viewCRUDPartidario.preencheTabela();
-        viewCRUDPartidario.setVisible(true);
+        origem.setVisible(true);
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

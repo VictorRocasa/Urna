@@ -35,7 +35,7 @@ public class CandidatoDAO implements InterfaceDAO{
 
     @Override
     public void exclui(int id) throws ClassNotFoundException, SQLException {
-        sql = "DELETE from candidato where id_candidato = "+id+";";
+        sql = "DELETE from candidato WHERE id_candidato = "+id+";";
         conn = Conexao.conectar();
         PreparedStatement stmt;
         stmt = conn.prepareStatement(sql);
@@ -63,11 +63,10 @@ public class CandidatoDAO implements InterfaceDAO{
             case 2: valorConsulta =  " WHERE id_legenda  = "+candidato.getIdLegenda()+";"; break;//consulta por cargo da candidato enviado
             case 3: valorConsulta =  " WHERE id_partidario   = "+candidato.getIdPartidario()+";"; break;//consulta por regiao do candidato enviada
             case 4: valorConsulta =  " WHERE numero  = "+candidato.getNumero()+";"; break;//consulta por nVotos da candidato enviada
-            case 5: valorConsulta =  " WHERE votos_candidato = "+candidato.getnVotos()+";"; break;//consulta por nVotos da candidato enviada
             case 6: valorConsulta =  " WHERE id_legenda = "+candidato.getIdLegenda()+" AND id_eleicao ="+candidato.getIdPartidario()+";"; break;//consulta por nVotos da candidato enviada
             default: valorConsulta = ";"; break;
         }
-        sql = "SELECT id_candidato,id_legenda,id_eleicao,votos_candidato FROM candidato"+valorConsulta;
+        sql = "SELECT id_candidato,id_legenda,id_eleicao FROM candidato"+valorConsulta;
         ArrayList<Object> registros = new ArrayList();
         conn = Conexao.conectar();
         Statement stmt = conn.createStatement();
@@ -78,7 +77,6 @@ public class CandidatoDAO implements InterfaceDAO{
            registro.setIdCandidato(retorno.getInt(1));              
            registro.setIdLegenda(retorno.getInt(2));
            registro.setIdPartidario(retorno.getInt(3));
-           registro.setnVotos(retorno.getInt(4)); 
            registros.add(registro);
         }
         return registros;
@@ -115,5 +113,22 @@ public class CandidatoDAO implements InterfaceDAO{
            candidato.setNumero(retorno.getInt(2));
         }
         return candidato;
+    }
+    
+    public ArrayList<Object[]> consultaEleicao(int idLegenda) throws ClassNotFoundException, SQLException{
+        sql = "SELECT id_candidato, nome, numero FROM candidato,eleitor,partidario WHERE id_legenda = "+idLegenda+" AND partidario.id_partidario = candidato.id_partidario AND partidario.id_eleitor = eleitor.id_eleitor;";
+        ArrayList<Object[]> registros = new ArrayList();
+        conn = Conexao.conectar();
+        Statement stmt = conn.createStatement();
+        ResultSet retorno = stmt.executeQuery(sql);   
+        Object[] registro;
+        while(retorno.next()){
+            registro = new Object[3];
+            registro[0] = retorno.getInt(1);
+            registro[1] = retorno.getString(2);
+            registro[2] = retorno.getInt(3);
+            registros.add(registro);
+        }
+        return registros;
     }
 }

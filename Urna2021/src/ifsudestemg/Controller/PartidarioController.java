@@ -5,7 +5,7 @@
  */
 package ifsudestemg.Controller;
 
-import ifsudestemg.Model.DAO.Validacoes;
+import ifsudestemg.Model.Validacoes;
 import ifsudestemg.Model.Eleitor;
 import ifsudestemg.Model.Partidario;
 import ifsudestemg.Model.Partido;

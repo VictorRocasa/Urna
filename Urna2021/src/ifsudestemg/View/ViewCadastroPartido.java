@@ -8,8 +8,6 @@ package ifsudestemg.View;
 import ifsudestemg.Controller.PartidoController;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
@@ -20,13 +18,13 @@ import javax.swing.text.MaskFormatter;
 public class ViewCadastroPartido extends javax.swing.JFrame {
     private PartidoController partidoController;
     private int idEdicao;
-    private int idOrigem;
+    private javax.swing.JFrame origem;
 
     /** 
      * Creates new form frCadastroPartido
      */
-    public ViewCadastroPartido(PartidoController partidoController, int idOrigem) {
-        this.idOrigem = idOrigem;
+    public ViewCadastroPartido(javax.swing.JFrame origem, PartidoController partidoController) {
+        this.origem = origem;
         idEdicao = -1;
         this.partidoController = partidoController;
         initComponents();
@@ -42,8 +40,8 @@ public class ViewCadastroPartido extends javax.swing.JFrame {
         }
     }
     
-    public ViewCadastroPartido(PartidoController partidoController, int id_edicao, String numero, String nome, int idOrigem) {
-        this.idOrigem = idOrigem;
+    public ViewCadastroPartido(javax.swing.JFrame origem, PartidoController partidoController, int id_edicao, String numero, String nome) {
+        this.origem = origem;
         this.partidoController = partidoController;
         initComponents();
         aplicaMascara();        
@@ -181,7 +179,7 @@ public class ViewCadastroPartido extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Número inválido!","Erro!", 2);
             return false;
         }
-        if(!nome.matches("[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{3,}")){
+        if(!nome.matches("[A-Za-záàâãéèêîíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑÎ]{3,200}")){
             JOptionPane.showMessageDialog(this, "Nome inválido!","Erro!!", 2);
             return false;
         }
@@ -204,16 +202,7 @@ public class ViewCadastroPartido extends javax.swing.JFrame {
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
-        if(idOrigem==-1){
-            ViewCRUDPartido viewCRUDPartido = new ViewCRUDPartido(partidoController);
-            viewCRUDPartido.preencheTabela();
-            viewCRUDPartido.setVisible(true);
-        }
-        else{
-            ViewAtribuirLegenda viewAtribuirLegenda = new ViewAtribuirLegenda(idOrigem);
-            viewAtribuirLegenda.setVisible(true);
-            this.dispose();
-        }
+        origem.setVisible(true);
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
@@ -236,7 +225,7 @@ public class ViewCadastroPartido extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this,"Partido com esse nome já existente!","Erro!", 2);
                 return;
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ViewCadastroPartido.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this,"A primeira e a segunda senha não conferem!","Erro!", 0);
             }    
         }
         else{
@@ -253,20 +242,11 @@ public class ViewCadastroPartido extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this,"Partido com esse nome já existente!","Erro!", 2);
                 return;
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ViewCadastroPartido.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this,"A primeira e a segunda senha não conferem!","Erro!", 0);
             }      
         }
         this.dispose();
-        if(idOrigem==-1){
-            ViewCRUDPartido viewCRUDPartido = new ViewCRUDPartido(partidoController);
-            viewCRUDPartido.preencheTabela();
-            viewCRUDPartido.setVisible(true);
-        }
-        else{
-            ViewAtribuirLegenda viewAtribuirLegenda = new ViewAtribuirLegenda(idOrigem);
-            viewAtribuirLegenda.setVisible(true);
-            this.dispose();
-        }
+        origem.setVisible(true);
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void ftxtNumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ftxtNumeroActionPerformed

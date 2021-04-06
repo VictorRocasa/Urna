@@ -33,7 +33,7 @@ public class PartidoDAO implements InterfaceDAO{
 
     @Override
     public void exclui(int id) throws ClassNotFoundException, SQLException {
-        sql = "DELETE from partido where id_partido = "+id+";";
+        sql = "DELETE from partido WHERE id_partido = "+id+";";
         conn = Conexao.conectar();
         PreparedStatement stmt;
         stmt = conn.prepareStatement(sql);
@@ -44,7 +44,7 @@ public class PartidoDAO implements InterfaceDAO{
     @Override
     public void altera(Object obj) throws ClassNotFoundException, SQLException {
         Partido partido = (Partido) obj;
-        sql = "UPDATE partido SET numero = "+partido.getNumero()+", nome = '"+partido.getNome()+"' where id_partido = "+partido.getIdPartido()+";";
+        sql = "UPDATE partido SET numero = "+partido.getNumero()+", nome = '"+partido.getNome()+"' WHERE id_partido = "+partido.getIdPartido()+";";
         conn = Conexao.conectar();
         PreparedStatement stmt;
         stmt = conn.prepareStatement(sql);

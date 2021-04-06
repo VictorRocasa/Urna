@@ -8,9 +8,7 @@ package ifsudestemg.View;
 import ifsudestemg.Controller.EleitorController;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
@@ -19,26 +17,43 @@ import javax.swing.text.MaskFormatter;
  * @author victorPC
  */
 public class ViewCadastroEleitor extends javax.swing.JFrame {
-        EleitorController eleitorController;
+    EleitorController eleitorController;
+    private javax.swing.JFrame origem;
+    Object[] eleitor = null;
 
     /**
      * Creates new form frCadastroEleitor
      */
-    public ViewCadastroEleitor(EleitorController eleitorController) {
+    public ViewCadastroEleitor(javax.swing.JFrame origem, EleitorController eleitorController) {
         initComponents();
         aplicaMascara();
         this.eleitorController = eleitorController;
+        this.origem = origem;
+    }
+    public ViewCadastroEleitor(javax.swing.JFrame origem, EleitorController eleitorController, int idEleitor) throws ClassNotFoundException, SQLException {
+        initComponents();
+        aplicaMascara();
+        this.eleitorController = eleitorController;
+        eleitor = eleitorController.retornarEleitor(idEleitor);
+        this.origem = origem;
+        this.txtNome.setText(eleitor[1].toString());
+        this.ftxtNascimento.setText(eleitor[2].toString());
+        this.ftxtCPF.setText(eleitor[3].toString());
+        this.ftxtTituloEleitor.setText(eleitor[4].toString().replace(" ", ""));
+        this.pswSenha1.setText(eleitor[5].toString());
+        this.pswSenha2.setText(eleitor[5].toString());
+        this.ftxtCPF.setEnabled(false);
     }
     
     private void aplicaMascara(){
         try{
             MaskFormatter maskNascimento = new MaskFormatter("##/##/####");
-            MaskFormatter maskCPF = new MaskFormatter("###.###.###.##");
+            MaskFormatter maskCPF = new MaskFormatter("###.###.###-##");
             MaskFormatter maskTitulo = new MaskFormatter("#############");
             
             maskNascimento.install(this.ftxtNascimento);
             maskCPF.install(this.ftxtCPF);
-            maskTitulo.install(this.fxtxTituloEleitor);
+            maskTitulo.install(this.ftxtTituloEleitor);
         }catch(ParseException ex){
         }
     }
@@ -63,7 +78,11 @@ public class ViewCadastroEleitor extends javax.swing.JFrame {
         btnConfirmar = new javax.swing.JButton();
         ftxtNascimento = new javax.swing.JFormattedTextField();
         ftxtCPF = new javax.swing.JFormattedTextField();
-        fxtxTituloEleitor = new javax.swing.JFormattedTextField();
+        ftxtTituloEleitor = new javax.swing.JFormattedTextField();
+        lblSenha = new javax.swing.JLabel();
+        lblSenha1 = new javax.swing.JLabel();
+        pswSenha1 = new javax.swing.JPasswordField();
+        pswSenha2 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Eleiçao online");
@@ -71,6 +90,12 @@ public class ViewCadastroEleitor extends javax.swing.JFrame {
         jLabel1.setText("Cadastro eleitoral:");
 
         lblNome.setText("Nome completo:");
+
+        txtNome.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtNomeMouseClicked(evt);
+            }
+        });
 
         lblNascimento.setText("Nascimento:");
 
@@ -98,6 +123,22 @@ public class ViewCadastroEleitor extends javax.swing.JFrame {
             }
         });
 
+        lblSenha.setText("Senha:");
+
+        lblSenha1.setText("Repetir senha:");
+
+        pswSenha1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pswSenha1ActionPerformed(evt);
+            }
+        });
+
+        pswSenha2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pswSenha2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout lblBarra1Layout = new javax.swing.GroupLayout(lblBarra1);
         lblBarra1.setLayout(lblBarra1Layout);
         lblBarra1Layout.setHorizontalGroup(
@@ -105,22 +146,26 @@ public class ViewCadastroEleitor extends javax.swing.JFrame {
             .addGroup(lblBarra1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(lblBarra1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fxtxTituloEleitor)
-                    .addGroup(lblBarra1Layout.createSequentialGroup()
-                        .addComponent(btnVoltar, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ftxtTituloEleitor)
                     .addComponent(ftxtCPF)
                     .addComponent(txtNome)
                     .addGroup(lblBarra1Layout.createSequentialGroup()
-                        .addGroup(lblBarra1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(lblNome)
-                            .addComponent(lblCPF)
-                            .addComponent(lblTitulo)
-                            .addComponent(lblNascimento)
-                            .addComponent(ftxtNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(lblBarra1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNome, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCPF, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTitulo, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNascimento, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ftxtNascimento, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblSenha, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblSenha1, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblBarra1Layout.createSequentialGroup()
+                        .addComponent(btnVoltar, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pswSenha1)
+                    .addComponent(pswSenha2))
                 .addContainerGap())
         );
         lblBarra1Layout.setVerticalGroup(
@@ -143,12 +188,20 @@ public class ViewCadastroEleitor extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fxtxTituloEleitor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
+                .addComponent(ftxtTituloEleitor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblSenha)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pswSenha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblSenha1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pswSenha2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(lblBarra1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnVoltar)
                     .addComponent(btnConfirmar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -179,7 +232,11 @@ public class ViewCadastroEleitor extends javax.swing.JFrame {
         nascimento = nascimento.replace(" ", "");
         String cpf = this.ftxtCPF.getText();
         cpf = cpf.replace(" ", "");
-        String titulo = this.fxtxTituloEleitor.getText().replace(" ", "");
+        String titulo = this.ftxtTituloEleitor.getText().replace(" ", "");
+        String senha1  = Arrays.toString(pswSenha1.getPassword());
+        senha1 = senha1.replace(" ", "").replace(",", "").replace("[", "").replace("]", "").replace("'", "");
+        String senha2  = Arrays.toString(pswSenha2.getPassword());
+        senha2 = senha2.replace(" ", "").replace(",", "").replace("[", "").replace("]", "").replace("'", "");
         if(nome.equals("")){
             JOptionPane.showMessageDialog(this, "O campo nome não deve ficar em branco!","Erro!", 2);
             return false;
@@ -196,8 +253,12 @@ public class ViewCadastroEleitor extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "O titulo não deve ficar em branco!","Erro!!", 2);
             return false;
         }
+        if(senha1.equals("")){
+            JOptionPane.showMessageDialog(this,"A senha não pode ser vazia!","Erro!", 0);
+            return false;
+        }
         
-        if(!nome.matches("[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{3,}")){
+        if(!nome.matches("[A-Za-záàâãéèêîíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑÎ]{3,200}")){
             JOptionPane.showMessageDialog(this, "Nome inválido!","Erro!", 2);
             return false;
         }
@@ -213,58 +274,94 @@ public class ViewCadastroEleitor extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Título inválido!","Erro!", 2);
             return false;
         }
+        if(senha1.length() < 6){
+            JOptionPane.showMessageDialog(this,"Senha muito pequena, necessários 6 caracteres!","Erro!", 0);
+            return false;
+        }
+        if(senha1.length() > 20){
+            JOptionPane.showMessageDialog(this,"Senha deve ter no máximo 20 caracteres!","Erro!", 0);
+            return false;
+        }
+        if(!senha2.equals(senha1)){
+            JOptionPane.showMessageDialog(this,"A primeira e a segunda senha não conferem!","Erro!", 0);
+            return false;
+        }
         
         return true;
     }
     
-    public void limpaCampos(){
-        this.ftxtCPF.setText("");
-        this.ftxtNascimento.setText("");
-        this.fxtxTituloEleitor.setText("");
-        this.txtNome.setText("");
-    }
-    
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
-        ViewDebug viewDebug = new ViewDebug();
-        viewDebug.setVisible(true);
+        origem.setVisible(true);
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         if(!this.validaCampos())
             return;
-        try {
-            eleitorController.adicionar(this.txtNome.getText(), this.ftxtNascimento.getText(), this.ftxtCPF.getText(), this.fxtxTituloEleitor.getText());
-            JOptionPane.showMessageDialog(this,"Cadastro realizado com sucesso.","Sucesso!", 1);
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this,"Erro ao realizar o cadastro, tente novamente mais tarde!","Erro!", 0);
-        } catch (NumberFormatException ex2) {
-            JOptionPane.showMessageDialog(this,"CPF já cadastrado!","Erro!", 2);
-        } catch (NegativeArraySizeException ex3) {
-            JOptionPane.showMessageDialog(this,"Título de eleitor já cadastrado!","Erro!", 2);
-        } catch (ClassNotFoundException ex4) {
-            Logger.getLogger(ViewCadastroEleitor.class.getName()).log(Level.SEVERE, null, ex4);
-        }        
-        this.dispose();
-        ViewDebug viewDebug = new ViewDebug();
-        viewDebug.setVisible(true);
+        if(eleitor==null){
+            try {
+                String senha  = Arrays.toString(pswSenha1.getPassword());
+                senha = senha.replace(" ", "").replace(",", "").replace("[", "").replace("]", "").replace("'", "");
+                eleitorController.adicionar(this.txtNome.getText(), this.ftxtNascimento.getText(), this.ftxtCPF.getText(), this.ftxtTituloEleitor.getText(),senha);
+                JOptionPane.showMessageDialog(this,"Cadastro realizado com sucesso.","Sucesso!", 1);
+                this.dispose();
+                origem.setVisible(true);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this,"Erro ao realizar o cadastro, tente novamente mais tarde! ex="+ex,"Erro!", 0);
+            } catch (NumberFormatException ex2) {
+                JOptionPane.showMessageDialog(this,"CPF já cadastrado!","Erro!", 2);
+            } catch (NegativeArraySizeException ex3) {
+                JOptionPane.showMessageDialog(this,"Título de eleitor já cadastrado!","Erro!", 2);
+            } catch (ClassNotFoundException ex4) {
+                JOptionPane.showMessageDialog(this,"Driver do banco de dados não encontrado, contate o administrador do banco!","Erro!", 0);
+            }   
+        }
+        else{
+            try {
+                String senha  = Arrays.toString(pswSenha1.getPassword());
+                senha = senha.replace(" ", "").replace(",", "").replace("[", "").replace("]", "").replace("'", "");
+                eleitorController.alterar((int) eleitor[0], this.txtNome.getText(), this.ftxtNascimento.getText(), this.ftxtTituloEleitor.getText(), senha);
+                JOptionPane.showMessageDialog(this,"Cadastro alterado com sucesso.","Sucesso!", 1);
+                this.dispose();
+                origem.setVisible(true);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this,"Erro ao alterar o cadastro, tente novamente mais tarde!","Erro!", 0);
+            } catch (ClassNotFoundException ex4) {
+                JOptionPane.showMessageDialog(this,"Não foi possível se conectar ao banco de dados, tente novamente mais tarde!","Erro!", 0);
+            }   
+        }
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void ftxtNascimentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ftxtNascimentoMouseClicked
     }//GEN-LAST:event_ftxtNascimentoMouseClicked
+
+    private void pswSenha1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswSenha1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pswSenha1ActionPerformed
+
+    private void pswSenha2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswSenha2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pswSenha2ActionPerformed
+
+    private void txtNomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNomeMouseClicked
+    }//GEN-LAST:event_txtNomeMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfirmar;
     private javax.swing.JButton btnVoltar;
     private javax.swing.JFormattedTextField ftxtCPF;
     private javax.swing.JFormattedTextField ftxtNascimento;
-    private javax.swing.JFormattedTextField fxtxTituloEleitor;
+    private javax.swing.JFormattedTextField ftxtTituloEleitor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel lblBarra1;
     private javax.swing.JLabel lblCPF;
     private javax.swing.JLabel lblNascimento;
     private javax.swing.JLabel lblNome;
+    private javax.swing.JLabel lblSenha;
+    private javax.swing.JLabel lblSenha1;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JPasswordField pswSenha1;
+    private javax.swing.JPasswordField pswSenha2;
     private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables
 }

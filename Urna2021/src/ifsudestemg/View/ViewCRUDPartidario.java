@@ -7,8 +7,6 @@ package ifsudestemg.View;
 
 import ifsudestemg.Controller.PartidarioController;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,14 +17,21 @@ import javax.swing.table.DefaultTableModel;
 public class ViewCRUDPartidario extends javax.swing.JFrame {
     private PartidarioController partidarioController;
     private DefaultTableModel model;
+    private javax.swing.JFrame origem;
+    
+    @Override
+    public void setVisible(boolean bln){
+        super.setVisible(bln);
+        preencheTabela();
+    }
 
     /**
      * Creates new form ViewCRUDEleitor
      */
-    public ViewCRUDPartidario(PartidarioController partidarioController) {
+    public ViewCRUDPartidario(javax.swing.JFrame origem, PartidarioController partidarioController) {
+        this.origem = origem;
         this.partidarioController = partidarioController;
         initComponents();
-        preencheTabela();
     }
     
     public void preencheTabela(){
@@ -42,7 +47,7 @@ public class ViewCRUDPartidario extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this,"Erro ao consultar os registros, tente novamente mais tarde!","Erro!", 0);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ViewCRUDPartidario.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,"A primeira e a segunda senha não conferem!","Erro!", 0);
         }
         this.tblPartidarios.setModel(model);
         this.tblPartidarios.removeColumn(this.tblPartidarios.getColumnModel().getColumn(0));
@@ -71,7 +76,7 @@ public class ViewCRUDPartidario extends javax.swing.JFrame {
         setTitle("Urna Online");
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lblTitulo.setText("Lista de eleições existentes:");
+        lblTitulo.setText("Lista de partidarios existentes:");
 
         tblPartidarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -183,16 +188,16 @@ public class ViewCRUDPartidario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        this.dispose();
-        ViewCadastroPartidario viewCadastroPartidario = new ViewCadastroPartidario(partidarioController);
+        this.setVisible(false);
+        ViewCadastroPartidario viewCadastroPartidario = new ViewCadastroPartidario(this, partidarioController);
         viewCadastroPartidario.setVisible(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         int indice = this.tblPartidarios.getSelectedRow();
         if(indice !=-1){
-            ViewCadastroPartidario viewCadastroPartidario = new ViewCadastroPartidario(partidarioController,(int) model.getValueAt(indice, 0),(""+model.getValueAt(indice, 1)),(""+model.getValueAt(indice, 2)),(""+model.getValueAt(indice, 3)));
-            this.dispose();
+            ViewCadastroPartidario viewCadastroPartidario = new ViewCadastroPartidario(this, partidarioController,(int) model.getValueAt(indice, 0),(""+model.getValueAt(indice, 1)),(""+model.getValueAt(indice, 2)),(""+model.getValueAt(indice, 3)));
+            this.setVisible(false);
             viewCadastroPartidario.setVisible(true);
         }
         else
@@ -213,7 +218,7 @@ public class ViewCRUDPartidario extends javax.swing.JFrame {
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(this,"Erro ao excluir o registro, tente novamente mais tarde!","Erro!", 0);
                 } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(ViewCRUDPartidario.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this,"A primeira e a segunda senha não conferem!","Erro!", 0);
                 }  
             }
         }
@@ -223,8 +228,7 @@ public class ViewCRUDPartidario extends javax.swing.JFrame {
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
-        ViewDebug viewDebug = new ViewDebug();
-        viewDebug.setVisible(true);
+        origem.setVisible(true);
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

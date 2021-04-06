@@ -9,8 +9,6 @@ import ifsudestemg.Controller.EleicaoController;
 import ifsudestemg.Controller.LegendaController;
 import ifsudestemg.Controller.PartidoController;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,15 +20,22 @@ public class ViewAtribuirLegenda extends javax.swing.JFrame {
     private LegendaController legendaController;
     private DefaultTableModel model;
     private int idEleicao;
+    private javax.swing.JFrame origem;
+    
+    @Override
+    public void setVisible(boolean bln){
+        super.setVisible(bln);
+        preencheTabela();
+    }
     
     /**
      * Creates new form frSelecionarPartidos
      */
-    public ViewAtribuirLegenda(int idEleicao) {
+    public ViewAtribuirLegenda(javax.swing.JFrame origem, int idEleicao) {
+        this.origem = origem;
         initComponents();
         this.idEleicao = idEleicao;
         this.legendaController = new LegendaController();
-        preencheTabela();
     }    
     
     public void preencheTabela(){
@@ -46,7 +51,7 @@ public class ViewAtribuirLegenda extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this,"Erro ao consultar os registros, tente novamente mais tarde!","Erro!", 0);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ViewAtribuirLegenda.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,"Driver do banco de dados inexistente, comunique o administrador do sistema!","Erro!", 0);
         }
         this.tblLegendas.setModel(model);
         this.tblLegendas.removeColumn(this.tblLegendas.getColumnModel().getColumn(0));
@@ -190,7 +195,7 @@ public class ViewAtribuirLegenda extends javax.swing.JFrame {
                 } catch (ClassNotFoundException ex) {
                     JOptionPane.showMessageDialog(this,"Erro ao criar a legenda partidária, tente novamente mais tarde!","Erro!", 0);
                 } catch (SQLException ex) {
-                    Logger.getLogger(ViewAtribuirLegenda.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,"A primeira e a segunda senha não conferem!","Erro!", 0);
             }
             else
                 try {
@@ -199,7 +204,7 @@ public class ViewAtribuirLegenda extends javax.swing.JFrame {
                 } catch (ClassNotFoundException ex) {
                     JOptionPane.showMessageDialog(this,"Erro ao remover a legenda partidária, tente novamente mais tarde!","Erro!", 0);
                 } catch (SQLException ex) {
-                    Logger.getLogger(ViewAtribuirLegenda.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,"A primeira e a segunda senha não conferem!","Erro!", 0);
                 }
             this.preencheTabela();
             this.tblLegendas.setRowSelectionInterval(indice, indice);
@@ -219,16 +224,14 @@ public class ViewAtribuirLegenda extends javax.swing.JFrame {
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
-        EleicaoController eleicaoController = new EleicaoController();
-        ViewCRUDEleicao viewCRUDEleicao = new ViewCRUDEleicao(eleicaoController);
-        viewCRUDEleicao.setVisible(true);
+        origem.setVisible(true);
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         int indice = this.tblLegendas.getSelectedRow();
         if(indice !=-1){
             PartidoController partidoController = new PartidoController();
-            ViewCadastroPartido viewCadastroPartido = new ViewCadastroPartido(partidoController,((int)model.getValueAt(indice, 0)),(""+model.getValueAt(indice, 1)),(""+model.getValueAt(indice, 2)),idEleicao);
+            ViewCadastroPartido viewCadastroPartido = new ViewCadastroPartido(this,partidoController,((int)model.getValueAt(indice, 0)),(""+model.getValueAt(indice, 1)),(""+model.getValueAt(indice, 2)));
             this.dispose();
             viewCadastroPartido.setVisible(true);
         }
@@ -239,7 +242,7 @@ public class ViewAtribuirLegenda extends javax.swing.JFrame {
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         this.dispose();
         PartidoController partidoController = new PartidoController();
-        ViewCadastroPartido viewCadastroPartido = new ViewCadastroPartido(partidoController,idEleicao);
+        ViewCadastroPartido viewCadastroPartido = new ViewCadastroPartido(this, partidoController);
         viewCadastroPartido.setVisible(true);
     }//GEN-LAST:event_btnCadastrarActionPerformed
 

@@ -7,8 +7,6 @@ package ifsudestemg.View;
 
 import ifsudestemg.Controller.EleicaoController;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -16,15 +14,23 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author victorPC
  */
+
 public class ViewCRUDEleicao extends javax.swing.JFrame {
     private EleicaoController eleicaoController;
     private DefaultTableModel model;
+    private javax.swing.JFrame origem; 
     
-    
-    public ViewCRUDEleicao(EleicaoController eleicaoController) {
+
+    @Override
+    public void setVisible(boolean bln){
+        super.setVisible(bln);
+        preencheTabela();
+    }
+
+    public ViewCRUDEleicao(javax.swing.JFrame origem, EleicaoController eleicaoController) {
+        this.origem = origem;
         this.eleicaoController = eleicaoController;
         initComponents();
-        preencheTabela();
     }    
     
     public void preencheTabela(){
@@ -40,7 +46,7 @@ public class ViewCRUDEleicao extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this,"Erro ao consultar os registros, tente novamente mais tarde!","Erro!", 0);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ViewCRUDEleicao.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(this,"Driver do banco de dados inexistente, comunique o administrador do sistema!","Erro!", 0);
         }
         this.tblEleicoes.setModel(model);
         this.tblEleicoes.removeColumn(this.tblEleicoes.getColumnModel().getColumn(0));
@@ -201,16 +207,16 @@ public class ViewCRUDEleicao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        this.dispose();
-        ViewCadastroEleicao viewCadastroEleicao = new ViewCadastroEleicao(eleicaoController);
+        this.setVisible(false);
+        ViewCadastroEleicao viewCadastroEleicao = new ViewCadastroEleicao(this,eleicaoController);
         viewCadastroEleicao.setVisible(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         int indice = this.tblEleicoes.getSelectedRow();
         if(indice !=-1){
-            ViewCadastroEleicao viewCadastroEleicao = new ViewCadastroEleicao(eleicaoController,(int) model.getValueAt(indice, 0),(""+model.getValueAt(indice, 1)),(""+model.getValueAt(indice, 2)),(""+model.getValueAt(indice, 3)),(""+model.getValueAt(indice, 4)));
-            this.dispose();
+            ViewCadastroEleicao viewCadastroEleicao = new ViewCadastroEleicao(this,eleicaoController,(int) model.getValueAt(indice, 0),(""+model.getValueAt(indice, 1)),(""+model.getValueAt(indice, 2)),(""+model.getValueAt(indice, 3)),(""+model.getValueAt(indice, 4)));
+            this.setVisible(false);
             viewCadastroEleicao.setVisible(true);
         }
         else
@@ -226,12 +232,12 @@ public class ViewCRUDEleicao extends javax.swing.JFrame {
             {
                 try{
                     eleicaoController.excluirPorId((int) model.getValueAt(indice, 0));
-                    JOptionPane.showMessageDialog(this,"Deletado com sucesso!","Sucesso!", 1);
                     preencheTabela();
+                    JOptionPane.showMessageDialog(this,"Deletado com sucesso!","Sucesso!", 1);
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(this,"Erro ao excluir o registro, tente novamente mais tarde!","Erro!", 0);
                 } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(ViewCRUDEleicao.class.getName()).log(Level.SEVERE, null, ex);
+                   JOptionPane.showMessageDialog(this,"Driver do banco de dados inexistente, comunique o administrador do sistema!","Erro!", 0);
                 }  
             }
         }
@@ -241,14 +247,13 @@ public class ViewCRUDEleicao extends javax.swing.JFrame {
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
-        ViewDebug viewDebug = new ViewDebug();
-        viewDebug.setVisible(true);        
+        origem.setVisible(true);        
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnPartidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPartidosActionPerformed
         int indice = this.tblEleicoes.getSelectedRow();
         if(indice !=-1){    
-            ViewAtribuirLegenda viewAtribuirLegenda = new ViewAtribuirLegenda((int) this.model.getValueAt(indice, 0));
+            ViewAtribuirLegenda viewAtribuirLegenda = new ViewAtribuirLegenda(this,(int) this.model.getValueAt(indice, 0));
             viewAtribuirLegenda.setVisible(true);
             this.dispose();
         }
@@ -259,7 +264,7 @@ public class ViewCRUDEleicao extends javax.swing.JFrame {
     private void btnCandidatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCandidatosActionPerformed
         int indice = this.tblEleicoes.getSelectedRow();
         if(indice !=-1){    
-            ViewAtribuirCandidato viewAtribuirCandidato = new ViewAtribuirCandidato((int) this.model.getValueAt(indice, 0));
+            ViewAtribuirCandidato viewAtribuirCandidato = new ViewAtribuirCandidato(this, (int) this.model.getValueAt(indice, 0));
             viewAtribuirCandidato.setVisible(true);
             this.dispose();
         }

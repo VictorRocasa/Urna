@@ -13,7 +13,6 @@ public class Legenda {
     private int idLegenda;
     private int idPartido;
     private int idEleicao;
-    private int nVotos;
 
     public int getIdLegenda() {
         return idLegenda;
@@ -38,15 +37,7 @@ public class Legenda {
     public void setIdEleicao(int idEleicao) {
         this.idEleicao = idEleicao;
     }
-
-    public int getnVotos() {
-        return nVotos;
-    }
-
-    public void setnVotos(int nVotos) {
-        this.nVotos = nVotos;
-    }
-    
+  
     
     
 }
