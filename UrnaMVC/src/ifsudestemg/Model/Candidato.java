@@ -14,7 +14,6 @@ public class Candidato {
     private int idLegenda;
     private int idPartidario;
     private int numero;
-    private int nVotos;
 
     public int getIdCandidato() {
         return idCandidato;
@@ -38,14 +37,6 @@ public class Candidato {
 
     public void setIdPartidario(int idPartidaro) {
         this.idPartidario = idPartidaro;
-    }
-
-    public int getnVotos() {
-        return nVotos;
-    }
-
-    public void setnVotos(int nVotos) {
-        this.nVotos = nVotos;
     }
 
     public int getNumero() {

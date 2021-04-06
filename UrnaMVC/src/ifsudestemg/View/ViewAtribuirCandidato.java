@@ -10,8 +10,6 @@ import ifsudestemg.Controller.EleicaoController;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
@@ -28,6 +26,16 @@ public class ViewAtribuirCandidato extends javax.swing.JFrame {
     private int idEleicao;
     private int idLegenda;
     private MaskFormatter maskNumero; 
+    private javax.swing.JFrame origem; 
+    
+    @Override
+    public void setVisible(boolean bln){
+        super.setVisible(bln);
+        if(candidatos)
+            preencheTabelaCandidatos();
+        else
+            preencheTabelaLegendas();
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -121,7 +129,7 @@ public class ViewAtribuirCandidato extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAdicionarRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblTitulo)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 575, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -150,11 +158,11 @@ public class ViewAtribuirCandidato extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-        public ViewAtribuirCandidato(int idEleicao) {
+        public ViewAtribuirCandidato(javax.swing.JFrame origem, int idEleicao) {
+        this.origem = origem;
         initComponents();
         this.idEleicao = idEleicao;
         this.candidatoController = new CandidatoController();
-        preencheTabelaLegendas();
         candidatos = false;
         this.btnAdicionarRemover.setEnabled(false);
         this.ftxtNumero.setEnabled(false);
@@ -187,7 +195,7 @@ public class ViewAtribuirCandidato extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this,"Erro ao consultar os registros, tente novamente mais tarde!","Erro!", 0);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ViewAtribuirCandidato.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,"A primeira e a segunda senha não conferem!","Erro!", 0);
         }
         this.tblCandidatos.setModel(modelLegenda);
         this.tblCandidatos.removeColumn(this.tblCandidatos.getColumnModel().getColumn(0));
@@ -205,7 +213,7 @@ public class ViewAtribuirCandidato extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this,"Erro ao consultar os registros, tente novamente mais tarde!","Erro!", 0);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ViewAtribuirCandidato.class.getName()).log(Level.SEVERE, null, ex);
+                   JOptionPane.showMessageDialog(this,"Driver do banco de dados inexistente, comunique o administrador do sistema!","Erro!", 0);
         }
         this.tblCandidatos.setModel(modelCandidato);
         this.tblCandidatos.removeColumn(this.tblCandidatos.getColumnModel().getColumn(0));
@@ -261,9 +269,7 @@ public class ViewAtribuirCandidato extends javax.swing.JFrame {
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
-        EleicaoController eleicaoController = new EleicaoController();
-        ViewCRUDEleicao viewCRUDEleicao = new ViewCRUDEleicao(eleicaoController);
-        viewCRUDEleicao.setVisible(true);        
+        origem.setVisible(true);        
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnAdicionarRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarRemoverActionPerformed
@@ -273,19 +279,23 @@ public class ViewAtribuirCandidato extends javax.swing.JFrame {
                 try {
                     candidatoController.adicionar(this.idLegenda,(int)modelCandidato.getValueAt(indice, 0), Integer.parseInt(this.ftxtNumero.getText().replace(" ", "")));
                     this.btnAdicionarRemover.setText("Remover");
+                    this.ftxtNumero.setEnabled(false);
+                    this.lblNumero.setEnabled(false);
                 } catch (ClassNotFoundException ex) {
                     JOptionPane.showMessageDialog(this,"Erro ao criar o candidato, tente novamente mais tarde!","Erro!", 0);
                 } catch (SQLException ex) {
-                    Logger.getLogger(ViewAtribuirLegenda.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,"A primeira e a segunda senha não conferem!","Erro!", 0);
             }
             else
                 try {
                     candidatoController.excluirPorId((int)modelCandidato.getValueAt(indice, 4));
                     this.btnAdicionarRemover.setText("Adicionar");
+                    this.ftxtNumero.setEnabled(true);
+                    this.lblNumero.setEnabled(true);
                 } catch (ClassNotFoundException ex) {
                     JOptionPane.showMessageDialog(this,"Erro ao remover o candidato, tente novamente mais tarde!","Erro!", 0);
                 } catch (SQLException ex) {
-                    Logger.getLogger(ViewAtribuirLegenda.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,"A primeira e a segunda senha não conferem!","Erro!", 0);
                 }
             this.preencheTabelaCandidatos();
             this.tblCandidatos.setRowSelectionInterval(indice, indice);

@@ -49,25 +49,29 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="fxtxTituloEleitor" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="btnVoltar" pref="120" max="32767" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnConfirmar" min="-2" pref="119" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="ftxtTituloEleitor" max="32767" attributes="0"/>
                       <Component id="ftxtCPF" alignment="0" max="32767" attributes="0"/>
                       <Component id="txtNome" alignment="0" max="32767" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblNome" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblCPF" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblTitulo" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblNascimento" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblNascimento" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="ftxtNascimento" alignment="0" min="-2" pref="119" max="-2" attributes="0"/>
+                              <Component id="lblSenha" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblSenha1" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="btnVoltar" pref="120" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnConfirmar" min="-2" pref="119" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="pswSenha1" alignment="0" max="32767" attributes="0"/>
+                      <Component id="pswSenha2" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -93,13 +97,21 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="fxtxTituloEleitor" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                  <Component id="ftxtTituloEleitor" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="lblSenha" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="pswSenha1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="lblSenha1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="pswSenha2" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnVoltar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnConfirmar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -116,6 +128,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNome">
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="txtNomeMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblNascimento">
           <Properties>
@@ -155,7 +170,27 @@
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="ftxtCPF">
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="fxtxTituloEleitor">
+        <Component class="javax.swing.JFormattedTextField" name="ftxtTituloEleitor">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblSenha">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Senha:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblSenha1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Repetir senha:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JPasswordField" name="pswSenha1">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pswSenha1ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JPasswordField" name="pswSenha2">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pswSenha2ActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

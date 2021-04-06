@@ -8,9 +8,6 @@ package ifsudestemg.View;
 import ifsudestemg.Controller.EleicaoController;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
@@ -21,11 +18,13 @@ import javax.swing.text.MaskFormatter;
 public class ViewCadastroEleicao extends javax.swing.JFrame {
     EleicaoController eleicaoController;
     private int idEdicao;
+    private javax.swing.JFrame origem;
     /**
      * Creates new form frCadastroEleicao
      */
     
-    public ViewCadastroEleicao(EleicaoController eleicaoController) {
+    public ViewCadastroEleicao(javax.swing.JFrame origem, EleicaoController eleicaoController) {
+        this.origem = origem;
         this.eleicaoController = eleicaoController;
         initComponents();
         aplicaMascara();
@@ -42,7 +41,8 @@ public class ViewCadastroEleicao extends javax.swing.JFrame {
     }
     
     
-    public ViewCadastroEleicao(EleicaoController eleicaoController,int idEleicao, String cargo, String regiao, String dataEleicao, String turno) {
+    public ViewCadastroEleicao(javax.swing.JFrame origem, EleicaoController eleicaoController,int idEleicao, String cargo, String regiao, String dataEleicao, String turno) {
+        this.origem = origem;
         this.eleicaoController = eleicaoController;
         initComponents();
         aplicaMascara();
@@ -228,11 +228,11 @@ public class ViewCadastroEleicao extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "O campo turno não deve ficar em branco!","Erro!", 2);
             return false;
         }
-        if(!cargo.matches("[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{3,}")){
+        if(!cargo.matches("[A-Za-záàâãéèêîíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑÎ]{3,200}")){
             JOptionPane.showMessageDialog(this, "Cargo inválido!","Erro!", 2);
             return false;
         }
-        if(!regiao.matches("[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,}")){
+        if(!regiao.matches("[A-Za-záàâãéèêîíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑÎ]{2,}")){
             JOptionPane.showMessageDialog(this, "regiao inválido!","Erro!", 2);
             return false;
         }
@@ -257,7 +257,7 @@ public class ViewCadastroEleicao extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this,"Erro ao adicionar o registro, tente novamente mais tarde!","Erro!", 0);
                 return;
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ViewCadastroEleicao.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,"A primeira e a segunda senha não conferem!","Erro!", 0);
             }
         }
         else{
@@ -268,20 +268,16 @@ public class ViewCadastroEleicao extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this,"Erro ao alterar o registro, tente novamente mais tarde!","Erro!", 0);
                 return;
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ViewCadastroEleicao.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this,"A primeira e a segunda senha não conferem!","Erro!", 0);
             }   
         }
         this.dispose();
-        ViewCRUDEleicao viewCRUDEleicao = new ViewCRUDEleicao(eleicaoController);
-        viewCRUDEleicao.preencheTabela();
-        viewCRUDEleicao.setVisible(true);
+        origem.setVisible(true);
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
-        ViewCRUDEleicao viewCRUDEleicao = new ViewCRUDEleicao(eleicaoController);
-        viewCRUDEleicao.preencheTabela();
-        viewCRUDEleicao.setVisible(true);
+        origem.setVisible(true);
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void txtCargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCargoActionPerformed

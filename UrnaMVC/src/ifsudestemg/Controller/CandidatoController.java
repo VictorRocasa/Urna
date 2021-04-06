@@ -46,6 +46,15 @@ public class CandidatoController {
         return dados;
     }
     
+    public Object[][] retornaCandidatosEleicao(int idLegenda) throws ClassNotFoundException, SQLException{
+        CandidatoDAO candidatoDAO = new CandidatoDAO();
+        ArrayList<Object[]> retorno = candidatoDAO.consultaEleicao(idLegenda);
+        Object[][] dados = new Object[retorno.size()][];
+        for(int i = 0; i < retorno.size(); i++)
+            dados[i] = retorno.get(i);
+        return dados;        
+    }
+    
     public Object[][] retornaDadosLegenda(int idEleicao) throws ClassNotFoundException, SQLException{
         LegendaDAO legendaDAO = new LegendaDAO();
         ArrayList<Object> retorno = legendaDAO.consulta(idEleicao);

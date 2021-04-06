@@ -44,6 +44,15 @@ public class LegendaController {
         return dados;
     }
     
+    public Object[][] retornaLegendaEleicao(int idEleicao) throws ClassNotFoundException, SQLException{
+        LegendaDAO legendaDAO = new LegendaDAO();
+        ArrayList<Object[]> retorno = legendaDAO.consultaEleicao(idEleicao);
+        Object[][] dados = new Object[retorno.size()][];
+        for(int i = 0; i < retorno.size(); i++)
+            dados[i] = retorno.get(i);
+        return dados;        
+    }
+    
     public void excluirPorId(int id) throws ClassNotFoundException, SQLException{
         LegendaDAO legendaDAO = new LegendaDAO();
         legendaDAO.exclui(id);
@@ -56,15 +65,5 @@ public class LegendaController {
         LegendaDAO legendaDAO = new LegendaDAO();
         legendaDAO.adiciona(legenda);
     }
-    
-    public void alterarPorId(int idLegenda, int idPartido, int idEleicao, String dataLegenda, String turno) throws ClassNotFoundException, SQLException{
-//        Legenda legenda = new Legenda();       
-//        legenda.setIdLegenda(idLegenda);
-//        legenda.setIdPartido(idPartido);
-//        legenda.setIdEleicao(idEleicao);
-//        LegendaDAO legendaDAO = new LegendaDAO(); 
-//        legendaDAO.altera(legenda);
-    }
-
-    
+         
 }

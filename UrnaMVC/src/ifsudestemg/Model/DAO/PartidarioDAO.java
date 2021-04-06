@@ -34,7 +34,7 @@ public class PartidarioDAO implements InterfaceDAO{
 
     @Override
     public void exclui(int id) throws ClassNotFoundException, SQLException {
-        sql = "DELETE from partidario where id_partidario = "+id+";";
+        sql = "DELETE from partidario WHERE id_partidario = "+id+";";
         conn = Conexao.conectar();
         PreparedStatement stmt;
         stmt = conn.prepareStatement(sql);
@@ -45,7 +45,7 @@ public class PartidarioDAO implements InterfaceDAO{
     @Override
     public void altera(Object obj) throws ClassNotFoundException, SQLException {
         Partidario partidario = (Partidario) obj;
-        sql = "UPDATE partidario SET id_partido = "+partidario.getIdPartido()+", cargo_no_partido = '"+partidario.getCargoNoPartido()+"' where id_partidario = "+partidario.getIdPartidario()+";";
+        sql = "UPDATE partidario SET id_partido = "+partidario.getIdPartido()+", cargo_no_partido = '"+partidario.getCargoNoPartido()+"' WHERE id_partidario = "+partidario.getIdPartidario()+";";
         conn = Conexao.conectar();
         PreparedStatement stmt;
         stmt = conn.prepareStatement(sql);

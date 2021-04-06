@@ -7,8 +7,6 @@ package ifsudestemg.View;
 
 import ifsudestemg.Controller.PartidoController;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,11 +17,18 @@ import javax.swing.table.DefaultTableModel;
 public class ViewCRUDPartido extends javax.swing.JFrame {
     private PartidoController partidoController;
     private DefaultTableModel model;
+    private javax.swing.JFrame origem;
+    
+    @Override
+    public void setVisible(boolean bln){
+        super.setVisible(bln);
+        preencheTabela();
+    }
 
-    public ViewCRUDPartido(PartidoController partidoController) {
+    public ViewCRUDPartido(javax.swing.JFrame origem, PartidoController partidoController) {
+        this.origem = origem;
         this.partidoController = partidoController;
         initComponents();
-        preencheTabela();
     }
     
     public void preencheTabela(){
@@ -39,7 +44,7 @@ public class ViewCRUDPartido extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this,"Erro ao consultar os registros, tente novamente mais tarde!","Erro!", 0);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ViewCRUDPartido.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,"Driver do banco de dados inexistente, comunique o administrador do sistema!","Erro!", 0);
         }
         this.tblPartidos.setModel(model);
         this.tblPartidos.removeColumn(this.tblPartidos.getColumnModel().getColumn(0));
@@ -175,16 +180,16 @@ public class ViewCRUDPartido extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        this.dispose();
-        ViewCadastroPartido viewCadastroPartido = new ViewCadastroPartido(partidoController,-1);
+        this.setVisible(false);
+        ViewCadastroPartido viewCadastroPartido = new ViewCadastroPartido(this, partidoController);
         viewCadastroPartido.setVisible(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         int indice = this.tblPartidos.getSelectedRow();
         if(indice !=-1){
-            ViewCadastroPartido viewCadastroPartido = new ViewCadastroPartido(partidoController,((int)model.getValueAt(indice, 0)),(""+model.getValueAt(indice, 1)),(""+model.getValueAt(indice, 2)),-1);
-            this.dispose();
+            ViewCadastroPartido viewCadastroPartido = new ViewCadastroPartido(this,partidoController,((int)model.getValueAt(indice, 0)),(""+model.getValueAt(indice, 1)),(""+model.getValueAt(indice, 2)));
+            this.setVisible(false);
             viewCadastroPartido.setVisible(true);
         }
         else
@@ -204,7 +209,7 @@ public class ViewCRUDPartido extends javax.swing.JFrame {
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(this,"Erro ao excluir o registro, tente novamente mais tarde!","Erro!", 0);
                 } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(ViewCRUDPartido.class.getName()).log(Level.SEVERE, null, ex);
+                   JOptionPane.showMessageDialog(this,"Driver do banco de dados inexistente, comunique o administrador do sistema!","Erro!", 0);
                 }
             }
         }
@@ -214,8 +219,7 @@ public class ViewCRUDPartido extends javax.swing.JFrame {
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
-        ViewDebug viewDebug = new ViewDebug();
-        viewDebug.setVisible(true);
+        origem.setVisible(true);
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

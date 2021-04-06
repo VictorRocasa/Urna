@@ -35,7 +35,7 @@ public class LegendaDAO implements InterfaceDAO{
 
     @Override
     public void exclui(int id) throws ClassNotFoundException, SQLException {
-        sql = "DELETE from legenda where id_legenda = "+id+";";
+        sql = "DELETE from legenda WHERE id_legenda = "+id+";";
         conn = Conexao.conectar();
         PreparedStatement stmt;
         stmt = conn.prepareStatement(sql);
@@ -62,11 +62,10 @@ public class LegendaDAO implements InterfaceDAO{
             case 1: valorConsulta = " WHERE id_legenda  = "+legenda.getIdLegenda()+";"; break;//consulta por id da legenda enviada
             case 2: valorConsulta =  " WHERE id_partido  = "+legenda.getIdPartido()+";"; break;//consulta por cargo da legenda enviado
             case 3: valorConsulta =  " WHERE id_eleicao  = "+legenda.getIdEleicao()+";"; break;//consulta por regiao do legenda enviada
-            case 4: valorConsulta =  " WHERE votos_legenda = "+legenda.getnVotos()+";"; break;//consulta por nVotos da legenda enviada
             case 5: valorConsulta =  " WHERE id_partido = "+legenda.getIdPartido()+" AND id_eleicao ="+legenda.getIdEleicao()+";"; break;//consulta por nVotos da legenda enviada
             default: valorConsulta = ";"; break;
         }
-        sql = "SELECT id_legenda,id_partido,id_eleicao,votos_legenda FROM legenda"+valorConsulta;
+        sql = "SELECT id_legenda,id_partido,id_eleicao FROM legenda"+valorConsulta;
         ArrayList<Object> registros = new ArrayList();
         conn = Conexao.conectar();
         Statement stmt = conn.createStatement();
@@ -77,7 +76,6 @@ public class LegendaDAO implements InterfaceDAO{
            registro.setIdLegenda(retorno.getInt(1));              
            registro.setIdPartido(retorno.getInt(2));
            registro.setIdEleicao(retorno.getInt(3));
-           registro.setnVotos(retorno.getInt(4)); 
            registros.add(registro);
         }
         return registros;
@@ -99,6 +97,23 @@ public class LegendaDAO implements InterfaceDAO{
            registros.add(registro);
         }
         Conexao.closeConn();  
+        return registros;
+    }
+    
+    public ArrayList<Object[]> consultaEleicao(int idEleicao) throws ClassNotFoundException, SQLException{
+        sql = "SELECT id_legenda, nome, numero FROM legenda,partido WHERE id_eleicao = "+idEleicao+" AND legenda.id_partido = partido.id_partido;";
+        ArrayList<Object[]> registros = new ArrayList();
+        conn = Conexao.conectar();
+        Statement stmt = conn.createStatement();
+        ResultSet retorno = stmt.executeQuery(sql);   
+        Object[] registro;
+        while(retorno.next()){
+            registro = new Object[3];
+            registro[0] = retorno.getInt(1);
+            registro[1] = retorno.getString(2);
+            registro[2] = retorno.getInt(3);
+            registros.add(registro);
+        }
         return registros;
     }
 }

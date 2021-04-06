@@ -34,7 +34,7 @@ public class EleicaoDAO implements InterfaceDAO{
 
     @Override
     public void exclui(int id) throws ClassNotFoundException, SQLException{
-        sql = "DELETE from eleicao where id_eleicao = "+id+";";
+        sql = "DELETE from eleicao WHERE id_eleicao = "+id+";";
         conn = Conexao.conectar();
         PreparedStatement stmt;
         stmt = conn.prepareStatement(sql);
@@ -45,7 +45,7 @@ public class EleicaoDAO implements InterfaceDAO{
     @Override
     public void altera(Object obj) throws ClassNotFoundException, SQLException{
         Eleicao eleicao = (Eleicao) obj;
-        sql = "UPDATE eleicao SET cargo = '"+eleicao.getCargo()+"', regiao = '"+eleicao.getRegiao()+"', data_da_eleicao = '"+eleicao.getDataEleicao()+"', turno = '"+eleicao.getTurno()+"' where id_eleicao = "+eleicao.getIdEleicao()+";";
+        sql = "UPDATE eleicao SET cargo = '"+eleicao.getCargo()+"', regiao = '"+eleicao.getRegiao()+"', data_da_eleicao = '"+eleicao.getDataEleicao()+"', turno = '"+eleicao.getTurno()+"' WHERE id_eleicao = "+eleicao.getIdEleicao()+";";
         conn = Conexao.conectar();
         PreparedStatement stmt;
         stmt = conn.prepareStatement(sql);

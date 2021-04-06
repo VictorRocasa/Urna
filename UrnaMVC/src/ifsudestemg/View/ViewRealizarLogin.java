@@ -5,18 +5,38 @@
  */
 package ifsudestemg.View;
 
+import ifsudestemg.Controller.EleitorController;
+import ifsudestemg.Controller.LoginController;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Arrays;
+import javax.swing.JOptionPane;
+import javax.swing.text.MaskFormatter;
+
 /**
  *
  * @author victorPC
  */
 public class ViewRealizarLogin extends javax.swing.JFrame {
+LoginController loginController;
 
     /**
      * Creates new form ViewRealizarLogin
      */
     public ViewRealizarLogin() {
         initComponents();
+        this.loginController = new LoginController();
+        aplicaMascara();
     }
+    
+    private void aplicaMascara(){
+        try {
+            MaskFormatter maskCpf = new MaskFormatter("###.###.###-##");
+            maskCpf.install(ftxtCpf);
+        } catch (ParseException ex) {
+            System.err.println("Erro "+ex);
+        }
+    } 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,23 +47,184 @@ public class ViewRealizarLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnlLogin = new javax.swing.JPanel();
+        lblLogin = new javax.swing.JLabel();
+        lblSenha = new javax.swing.JLabel();
+        pswSenha = new javax.swing.JPasswordField();
+        btnLogin = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnCadastrar = new javax.swing.JButton();
+        lblTextoBoasVindas = new javax.swing.JLabel();
+        ftxtCpf = new javax.swing.JFormattedTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Urna Online");
+
+        pnlLogin.setToolTipText("");
+        pnlLogin.setAutoscrolls(true);
+
+        lblLogin.setText("CPF:");
+
+        lblSenha.setText("Senha:");
+
+        pswSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pswSenhaActionPerformed(evt);
+            }
+        });
+
+        btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnCadastrar.setText("Cadastrar-se");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
+
+        lblTextoBoasVindas.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblTextoBoasVindas.setText("Realize aqui seu login:");
+
+        javax.swing.GroupLayout pnlLoginLayout = new javax.swing.GroupLayout(pnlLogin);
+        pnlLogin.setLayout(pnlLoginLayout);
+        pnlLoginLayout.setHorizontalGroup(
+            pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLoginLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlLoginLayout.createSequentialGroup()
+                        .addComponent(lblTextoBoasVindas)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlLoginLayout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pnlLoginLayout.createSequentialGroup()
+                                .addComponent(btnCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlLoginLayout.createSequentialGroup()
+                                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lblLogin)
+                                    .addComponent(lblSenha))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(pswSenha)
+                                    .addComponent(ftxtCpf))))))
+                .addContainerGap())
+        );
+        pnlLoginLayout.setVerticalGroup(
+            pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLoginLayout.createSequentialGroup()
+                .addComponent(lblTextoBoasVindas)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblLogin)
+                    .addComponent(ftxtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSenha))
+                .addGap(18, 18, 18)
+                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnCancelar)
+                        .addComponent(btnLogin)))
+                .addGap(11, 11, 11))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnlLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        this.setVisible(false);
+        this.btnCancelarActionPerformed(null);
+        EleitorController eleitorController = new EleitorController();
+        ViewCadastroEleitor viewCadastroEleitor = new ViewCadastroEleitor(this, eleitorController);
+        viewCadastroEleitor.setVisible(true);
+    }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        ftxtCpf.setText("");
+        pswSenha.setText("");
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        String cpf = ftxtCpf.getText();
+        if(cpf.equals("   .   .   -  ")){
+            JOptionPane.showMessageDialog(this,"Digite seu cpf!","Erro!", 0);
+            return;
+        }
+        String senha  = Arrays.toString(pswSenha.getPassword());
+        senha = senha.replace(" ", "").replace(",", "").replace("[", "").replace("]", "").replace("'", "");
+        if(senha.isEmpty()){
+            JOptionPane.showMessageDialog(this,"Digite sua senha!","Erro!", 0);
+            return;
+        }
+        try {
+            switch (LoginController.realizarLogin(cpf, senha)){
+                case 0:
+                    new ViewAreaInternaEleitor(cpf).setVisible(true);
+                    this.dispose();
+                    break;  
+                case 1:
+                new ViewAreaInternaFiscal(cpf).setVisible(true);
+                this.dispose();
+                break;
+                default:
+                    JOptionPane.showMessageDialog(this,"Nome de usuário ou senha incorretos!","Erro!", 0);
+                break;
+            }
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this,"Driver do banco de dados inexistente, comunique o administrador do sistema!","Erro!", 0);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this,"Não foi possível se conectar ao banco de dados, tente novamente mais tarde!","Erro!", 0);
+        }
+    }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void pswSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswSenhaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pswSenhaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCadastrar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnLogin;
+    private javax.swing.JFormattedTextField ftxtCpf;
+    private javax.swing.JLabel lblLogin;
+    private javax.swing.JLabel lblSenha;
+    private javax.swing.JLabel lblTextoBoasVindas;
+    private javax.swing.JPanel pnlLogin;
+    private javax.swing.JPasswordField pswSenha;
     // End of variables declaration//GEN-END:variables
 }

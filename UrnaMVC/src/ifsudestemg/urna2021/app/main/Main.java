@@ -5,7 +5,6 @@
  */
 package ifsudestemg.urna2021.app.main;
 
-import ifsudestemg.View.ViewCRUDEleicao;
 import ifsudestemg.View.ViewDebug;
 
 /**
